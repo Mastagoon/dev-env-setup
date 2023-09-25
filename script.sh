@@ -1,6 +1,6 @@
 #!/bin/sh
 apt-get update
-apt-get install tmux git curl make -y
+apt-get install tmux git curl wget make -y
 # check if i3-cinnamon exists
 if ! command -v i3-cinnamon; then
 		# install i3-cinnamon
@@ -32,6 +32,15 @@ if ! command --version zsh; then
 fi
 
 if ! command -v nvim; then
-	echo "Installinv neovim"
-	curl -sL https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+	echo "Installing neovim"
+	wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -O /usr/bin/nvim
+	echo "Installing nvim-plug"
+	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+				 https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
+
+git clone https://github.com/mastagoon/dotfiles ~/.dotfiles
+ln -s ~/.dotfiles/.zshrc ~/.zshrc
+ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
+ln -s ~/.dotfiles/.config/nvim ~/.config/nvim
+ln -s ~/.dotfiles/.config/i3 ~/.config/i3
